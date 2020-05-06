@@ -15,10 +15,6 @@ export default class StatsCommand extends Command {
   }
 
   public exec(message: Message) {
-    let executed = exec(
-      "cat /etc/*-release; cat /usr/lib/os-release; cat /etc/openwrt_release"
-    );
-
     return message.util.send(
       [
         `> System Information`,
