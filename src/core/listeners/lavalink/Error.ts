@@ -1,10 +1,10 @@
 import { Listener } from "discord-akairo";
 
-export default class LavalinkOpenListener extends Listener {
+export default class LavalinkErrorListener extends Listener {
   public constructor() {
-    super("open", {
+    super("error", {
       emitter: "lavaclient",
-      event: "open",
+      event: "error",
     });
   }
 
