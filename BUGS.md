@@ -11,7 +11,7 @@ Use Voice Activity Detection
 Speak
 Connect.
 
-## Bug isn't shown here?
+## Bug isn't shown here
 
 You may use the `l!bugreport` command with the usages: `l!bugreport [command] [text, please include links]`.
 You can also report an issue report at [this link](https://github.com/Sxmurai/lavaboat/issues).
