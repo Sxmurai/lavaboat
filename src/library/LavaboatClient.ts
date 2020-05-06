@@ -27,7 +27,7 @@ export default class LavaboatClient extends AkairoClient {
   }
 
   public music: LavaboatManager = new LavaboatManager(config.get("nodes"), {
-    shards: this.shard ? this.shard.count : 0,
+    shards: this.shard ? this.shard.count : 1,
     send: (id, payload) => {
       const guild = this.guilds.cache.get(id);
       if (guild) guild.shard.send(payload);
@@ -97,7 +97,7 @@ export default class LavaboatClient extends AkairoClient {
     this.commandHandler.loadAll();
     this.listenerHandler.loadAll();
 
-    //await this.music.init(config.get("bot.userID"));
+    await this.music.init(config.get("bot.userID"));
   }
 
   public async start(): Promise<string> {
