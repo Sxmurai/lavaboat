@@ -1,0 +1,29 @@
+{
+  "name": "lavaboat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./build/Lavaboat.js",
+  "scripts": {
+    "test": "tsc && clear && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sxmurai/lavaboat.git"
+  },
+  "author": "Gavin2545",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Sxmurai/lavaboat/issues"
+  },
+  "homepage": "https://github.com/Sxmurai/lavaboat#readme",
+  "dependencies": {
+    "@ayanaware/logger": "^2.2.1",
+    "@kyflx-dev/lavalink-types": "^1.0.2",
+    "@types/node": "^13.13.5",
+    "discord-akairo": "github:discord-akairo/discord-akairo",
+    "discord.js": "github:discordjs/discord.js",
+    "dot-prop": "^5.2.0",
+    "lavaclient": "^1.0.17",
+    "yaml": "^1.9.2"
+  }
+}
