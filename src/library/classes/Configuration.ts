@@ -1,3 +1,5 @@
+// Credit to https://github.com/LolWastedJS
+
 import Logger from "@ayanaware/logger";
 import dotprop from "dot-prop";
 import { readFileSync, existsSync, writeFileSync } from "fs";
