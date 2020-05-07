@@ -4,7 +4,8 @@
   "description": "",
   "main": "./build/Lavaboat.js",
   "scripts": {
-    "test": "tsc && clear && node ."
+    "test": "tsc && clear && node .",
+    "build": "tsc && pm2 restart Lavaboat && clear && pm2 logs Lavaboat"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,15 @@
   "dependencies": {
     "@ayanaware/logger": "^2.2.1",
     "@kyflx-dev/lavalink-types": "^1.0.2",
+    "@lavalink/encoding": "^0.1.1",
+    "@prisma/cli": "^2.0.0-beta.4",
+    "@prisma/client": "^2.0.0-beta.4",
     "@types/node": "^13.13.5",
     "discord-akairo": "github:discord-akairo/discord-akairo",
     "discord.js": "github:discordjs/discord.js",
     "dot-prop": "^5.2.0",
-    "lavaclient": "^1.0.17",
+    "lavaclient": "^1.0.18",
+    "ms": "^2.1.2",
     "yaml": "^1.9.2"
   }
 }
