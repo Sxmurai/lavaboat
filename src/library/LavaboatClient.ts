@@ -1,11 +1,14 @@
 import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
 import { LavaboatOptions } from "./interfaces/Client";
-import { Configuration, LavaboatManager, LavaboatEmbed } from "./classes";
-import Logger from "@ayanaware/logger";
+import { Configuration, LavaboatEmbed, LavaboatQueue } from "./classes";
+import { PrismaClient } from "@prisma/client";
+import { Logger } from "@kyflx-dev/logger";
 import { join } from "path";
+import { Player, Manager } from "lavaclient";
 
 declare global {
   const config: Configuration;
+  const prisma: PrismaClient;
 }
 
 declare module "discord-akairo" {
@@ -13,8 +16,14 @@ declare module "discord-akairo" {
     commandHandler: CommandHandler;
     listenerHandler: ListenerHandler;
     data: LavaboatOptions;
-    music: LavaboatManager;
+    music: Manager;
     logger: Logger;
+  }
+}
+
+declare module "lavaclient" {
+  interface Player {
+    queue: LavaboatQueue;
   }
 }
 
@@ -26,7 +35,7 @@ export default class LavaboatClient extends AkairoClient {
     });
   }
 
-  public music: LavaboatManager = new LavaboatManager(config.get("nodes"), {
+  public music: Manager = new Manager(config.get("nodes"), {
     shards: this.shard ? this.shard.count : 1,
     send: (id, payload) => {
       const guild = this.guilds.cache.get(id);
@@ -34,9 +43,17 @@ export default class LavaboatClient extends AkairoClient {
 
       return;
     },
+    player: class LavaboatPlayer extends Player {
+      queue: LavaboatQueue = new LavaboatQueue(this);
+    },
   });
 
-  public logger: Logger = Logger.get(LavaboatManager);
+  public logger: Logger = Logger.custom(
+    "library",
+    "client",
+    "src.library.LavaboatClient",
+    "CLIENT"
+  );
 
   public commandHandler: CommandHandler = new CommandHandler(this, {
     directory: join("build", "core", "commands"),
