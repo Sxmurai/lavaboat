@@ -77,10 +77,11 @@ export default class PlayCommand extends Command {
 
     if (!player.queue) player.queue = new LavaboatQueue(player);
 
-    const loadedTrack = await RestManager.loadTracks(
-      track,
-      type === "youtube" ? "ytsearch" : "scsearch"
-    );
+    let loadedTrack = await RestManager.loadTracks(track);
+    if (!["http:", "https:"].includes(track))
+      loadedTrack = await RestManager.loadTracks(
+        `${type === "youtube" ? "ytsearch:" : "scsearch"}:${track}`
+      );
     if (!loadedTrack.tracks.length)
       return message.util.send(
         new LavaboatEmbed(message)
@@ -88,7 +89,11 @@ export default class PlayCommand extends Command {
           .setDescription(`Nothing was found for your search query on ${type}.`)
       );
 
-    player.queue.add(loadedTrack.tracks[0].track, message.author);
+    if (loadedTrack.loadType === "PLAYLIST_LOADED")
+      loadedTrack.tracks.map(({ track }) =>
+        player.queue.add(track, message.author)
+      );
+    else player.queue.add(loadedTrack.tracks[0].track, message.author);
 
     message.util.send(
       new LavaboatEmbed(message)
@@ -96,7 +101,9 @@ export default class PlayCommand extends Command {
           `https://i.ytimg.com/vi/${loadedTrack.tracks[0].info.identifier}/hqdefault.jpg`
         )
         .setDescription(
-          `Enqueued:\n\n [${loadedTrack.tracks[0].info.title}](${loadedTrack.tracks[0].info.uri})`
+          loadedTrack.loadType === "PLAYLIST_LOADED"
+            ? `Enqueued Playlist (\`${loadedTrack.tracks.length} Tracks\`):\n\n ${loadedTrack.playlistInfo.name}`
+            : `Enqueued Track:\n\n [${loadedTrack.tracks[0].info.title}](${loadedTrack.tracks[0].info.uri})`
         )
     );
 
