@@ -22,6 +22,16 @@ export default class LavaboatQueue extends EventEmitter {
 
       const oldTrack = this.queue.shift();
 
+      if (this.#message.guild.me.voice.channel.members.size === 1) {
+        this.clean();
+
+        this.#message.channel.send(
+          new LavaboatEmbed(this.#message).setDescription(
+            `You abandoned me, so I have cleared the queue`
+          )
+        );
+      }
+
       if (this.repeat.track) this.queue.unshift(oldTrack);
       else if (this.repeat.queue) this.loopQueue(this.queue);
 
@@ -77,14 +87,6 @@ export default class LavaboatQueue extends EventEmitter {
       track,
       requester,
     });
-
-    return this.queue;
-  }
-
-  public handlePlaylist(requester: User, ...tracks: any[]) {
-    for (const track of tracks) {
-      this.queue.push({ track, requester });
-    }
 
     return this.queue;
   }
