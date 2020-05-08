@@ -81,6 +81,20 @@ export default class LavaboatQueue extends EventEmitter {
     return this.queue;
   }
 
+  public handlePlaylist(requester: User, ...tracks: any[]) {
+    for (const track of tracks) {
+      this.queue.push({ track, requester });
+    }
+
+    return this.queue;
+  }
+
+  public async clean() {
+    this.queue = [];
+    this.#oldQueue = [];
+    this.current = undefined;
+  }
+
   public async start(message: Message) {
     this.#message = message;
     if (!this.queue.length) return this.emit("finished");
