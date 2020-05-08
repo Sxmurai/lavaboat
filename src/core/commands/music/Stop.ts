@@ -39,6 +39,7 @@ export default class StopCommand extends Command {
       );
 
     await player.queue.clean();
+    player.queue.emit("finished");
 
     return message.util.send(
       new LavaboatEmbed(message).setDescription(`Disconnected the player.`)
