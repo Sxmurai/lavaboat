@@ -29,7 +29,7 @@ export default class HandlerErrorListener extends Listener {
       ? `${arr
           .slice(0, -1)
           .map((owner) => `${this.client.users.cache.get(owner).tag}`)
-          .join(", ")} and ${this.client.users.cache.get(arr.slice(-1)[0]).tag}`
+          .join(", ")} or ${this.client.users.cache.get(arr.slice(-1)[0]).tag}`
       : this.client.users.cache.get(arr[0]).tag;
   }
 }
