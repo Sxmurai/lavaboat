@@ -21,7 +21,7 @@ export default class ReadyListener extends Listener {
         )} guilds!`,
         `${config.get("bot.prefix")}help | ${
           this.handler.modules.size
-        } commmands!`,
+        } commands!`,
       ],
       i = 0;
 
