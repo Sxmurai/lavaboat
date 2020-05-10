@@ -25,6 +25,7 @@ export default class LinksCommand extends Command {
             `[Github](https://github.com/Sxmurai/lavaboat)`,
             `[Support Server](https://discord.gg/c9zYnWx)`,
             `[Invite](https://discordapp.com/oauth2/authorize?client_id=707403122997198959&scope=bot&permissions=0)`,
+            `[Discord Boats](https://discord.boats/bot/707403122997198959)`
           ].join("\n")
         )
     );
