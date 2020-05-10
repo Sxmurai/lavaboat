@@ -44,7 +44,7 @@ export default class PlayCommand extends Command {
     message: Message,
     { track, type }: { track: string; type: string }
   ) {
-    const { channel, id } = message.member.voice;
+    const { channel } = message.member.voice;
     if (!channel)
       return message.util.send(
         new LavaboatEmbed(message)
@@ -110,7 +110,7 @@ export default class PlayCommand extends Command {
             )
         );
 
-        if (!player.playing) await player.queue.start(message);
+        if (!player.paused) await player.queue.start(message);
 
         break;
 
@@ -127,7 +127,7 @@ export default class PlayCommand extends Command {
             )
         );
 
-        if (!player.playing) await player.queue.start(message);
+        if (!player.paused) await player.queue.start(message);
 
         break;
 
@@ -180,9 +180,9 @@ export default class PlayCommand extends Command {
                 )
             );
 
-            if (!player.playing) await player.queue.start(message);
+            if (!player.paused) await player.queue.start(message);
           })
-          .catch(() => msg.edit(`Well, cancelled the selection.`));
+          .catch(() => message.util.send(`Well, cancelled the selection.`));
 
         break;
     }
