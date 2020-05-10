@@ -44,7 +44,7 @@ export default class QueueCommand extends Command {
 
     if (page > maxPages || page < 1) page = 1;
 
-    const items = queue.map((value) => {
+    const items = queue.slice(1).map((value) => {
         return {
           track: {
             title: decode(value.track).title,
@@ -59,7 +59,13 @@ export default class QueueCommand extends Command {
         `Queue | ${message.guild.name}`,
         message.guild.iconURL({ dynamic: true })
       )
-      .setDescription(
+      .addField(
+        "Now Playing",
+        `[${decode(queue[0].track).title}](${decode(queue[0].track).uri})`
+      );
+
+    if (queue.length > 1)
+      embed.setDescription(
         display
           .map(
             (value, index) =>
