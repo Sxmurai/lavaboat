@@ -110,7 +110,7 @@ export default class PlayCommand extends Command {
             )
         );
 
-        if (!player.paused) await player.queue.start(message);
+        if (!player.paused && !player.playing) await player.queue.start(message);
 
         break;
 
@@ -127,7 +127,7 @@ export default class PlayCommand extends Command {
             )
         );
 
-        if (!player.paused) await player.queue.start(message);
+        if (!player.paused && !player.playing) await player.queue.start(message);
 
         break;
 
@@ -180,7 +180,7 @@ export default class PlayCommand extends Command {
                 )
             );
 
-            if (!player.paused) await player.queue.start(message);
+            if (!player.paused && !player.playing) await player.queue.start(message);
           })
           .catch(() => message.util.send(`Well, cancelled the selection.`));
 
