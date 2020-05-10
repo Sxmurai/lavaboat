@@ -26,9 +26,9 @@ export default class LavaboatQueue extends EventEmitter {
         this.clean();
 
         this.#message.channel.send(
-          new LavaboatEmbed(this.#message).setDescription(
-            `You abandoned me, so I have cleared the queue`
-          )
+          new LavaboatEmbed(this.#message)
+            .setDescription(`You abandoned me, so I have cleared the queue`)
+            .setFooter("")
         );
       }
 
@@ -52,6 +52,7 @@ export default class LavaboatQueue extends EventEmitter {
               decode(this.queue[0].track).identifier
             }/hqdefault.jpg`
           )
+          .setFooter("")
       );
     });
 
@@ -67,9 +68,11 @@ export default class LavaboatQueue extends EventEmitter {
         this.#message.guild.id
       );
       return this.#message.channel.send(
-        new LavaboatEmbed(this.#message).setDescription(
-          `The queue is hella empty, duces! :wave:`
-        )
+        new LavaboatEmbed(this.#message)
+          .setDescription(
+            `The queue has concluded. I will be leaving the voice channel. :wave:`
+          )
+          .setFooter("")
       );
     });
   }
