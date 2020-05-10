@@ -17,8 +17,8 @@ export default class LavaboatQueue extends EventEmitter {
   public constructor(public player: Player) {
     super();
 
-    player.on("end", async ({ reason }) => {
-      if (["REPLACED", "STOPPED"].includes(reason)) return;
+    player.on("end", async e => {
+      if (e && ["REPLACED", "STOPPED"].includes(e.reason)) return;
 
       const oldTrack = this.queue.shift();
 
@@ -98,7 +98,6 @@ export default class LavaboatQueue extends EventEmitter {
     this.queue = [];
     this.#oldQueue = [];
     this.current = undefined;
-    this.repeat = { track: false, queue: false };
   }
 
   public async start(message: Message) {
