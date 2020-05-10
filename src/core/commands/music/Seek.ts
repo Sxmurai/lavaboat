@@ -50,7 +50,10 @@ export default class SeekCommand extends Command {
           .setDescription(`Please join a voice channel that I am in.`)
       );
 
-    if (ms(time) > decode(player.queue.queue[0].track).length)
+    if (
+      ms(time) > decode(player.queue.queue[0].track).length ||
+      ms(time) == undefined
+    )
       return message.util.send(
         new LavaboatEmbed(message)
           .setColor("#db3b3b")
