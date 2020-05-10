@@ -7,3 +7,5 @@ A music bot which uses [lavaclient](https://www.npmjs.com/package/lavaclient) to
 ## Self-Hosting
 
 Self hosting is not supported yet, as the bot was legit just made a few days ago lmao
+
+![alt text](https://discord.boats/api/widget/707403122997198959 "Discord Boats")
