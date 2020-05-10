@@ -39,8 +39,8 @@ export default class SkipCommand extends Command {
       );
 
     await player.stop();
-    player.queue.queue.shift();
-    await player.queue.start(message);
+    //player.queue.queue.shift();
+    player.emit("end");
 
     return message.util.send(
       new LavaboatEmbed(message)
