@@ -35,7 +35,7 @@ export default class LavaboatQueue extends EventEmitter {
       if (this.repeat.track) this.queue.unshift(oldTrack);
       else if (this.repeat.queue) this.loopQueue(this.queue);
 
-      if (!this.queue[0]) return this.emit("finished");
+      if (!this.queue.length) return this.emit("finished");
       await player.play(this.queue[0].track);
     });
 
@@ -83,23 +83,23 @@ export default class LavaboatQueue extends EventEmitter {
   }
 
   public add(track: string, requester: User) {
-    this.queue.push({
+    if (!this.queue.length) this.queue = [];
+
+    return this.queue.push({
       track,
       requester,
     });
-
-    return this.queue;
   }
 
   public async clean() {
     this.queue = [];
     this.#oldQueue = [];
     this.current = undefined;
+    this.repeat = { track: false, queue: false };
   }
 
   public async start(message: Message) {
     this.#message = message;
-    if (!this.queue.length) return this.emit("finished");
     if (!this.queue[0]) this.queue.shift();
     await this.player.play(this.queue[0].track);
   }
