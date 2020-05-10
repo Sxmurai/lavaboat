@@ -1,6 +1,12 @@
-import { AkairoClient, CommandHandler, ListenerHandler } from "discord-akairo";
+import {
+  AkairoClient,
+  CommandHandler,
+  ListenerHandler,
+  InhibitorHandler,
+} from "discord-akairo";
 import { LavaboatOptions } from "./interfaces/Client";
 import { Configuration, LavaboatEmbed, LavaboatQueue } from "./classes";
+import { SettingsProvider } from "./database/SettingsProvider";
 import { PrismaClient } from "@prisma/client";
 import { Logger } from "@kyflx-dev/logger";
 import { join } from "path";
@@ -15,9 +21,11 @@ declare module "discord-akairo" {
   interface AkairoClient {
     commandHandler: CommandHandler;
     listenerHandler: ListenerHandler;
-    data: LavaboatOptions;
+    inhibitorHandler: InhibitorHandler;
+    data: LavaboatOptions; 
     music: Manager;
     logger: Logger;
+    db: SettingsProvider;
   }
 }
 
@@ -34,6 +42,8 @@ export default class LavaboatClient extends AkairoClient {
       disableMentions: "everyone",
     });
   }
+
+  public db: SettingsProvider = new SettingsProvider();
 
   public music: Manager = new Manager(config.get("nodes"), {
     shards: this.shard ? this.shard.count : 1,
@@ -57,7 +67,10 @@ export default class LavaboatClient extends AkairoClient {
 
   public commandHandler: CommandHandler = new CommandHandler(this, {
     directory: join("build", "core", "commands"),
-    prefix: config.get("bot.prefix"),
+    prefix: (_) =>
+      _.guild
+        ? this.db.get(_.guild.id, "config.prefix", config.get("bot.prefix"))
+        : config.get("bot.prefix"),
     allowMention: true,
     argumentDefaults: {
       prompt: {
@@ -102,6 +115,10 @@ export default class LavaboatClient extends AkairoClient {
     directory: join("build", "core", "listeners"),
   });
 
+  public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
+    directory: join("build", "core", "inhibitors"),
+  });
+
   private async setup(): Promise<void> {
     this.commandHandler.useListenerHandler(this.listenerHandler);
     this.listenerHandler.setEmitters({
@@ -113,8 +130,10 @@ export default class LavaboatClient extends AkairoClient {
 
     this.commandHandler.loadAll();
     this.listenerHandler.loadAll();
+    this.inhibitorHandler.loadAll();
 
     await this.music.init(config.get("bot.userID"));
+    await this.db.init();
   }
 
   public async start(): Promise<string> {
