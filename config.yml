@@ -1,0 +1,14 @@
+bot:
+  token:
+  owners: ["535585397435006987", "222908683460280320"]
+  prefix: "l!"
+  userID: "707403122997198959"
+nodes:
+  [
+    {
+      name: "main",
+      address: "localhost",
+      port: 2333,
+      password: "youshallnotpass",
+    },
+  ]
