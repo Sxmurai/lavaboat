@@ -11,6 +11,12 @@ export default class ShuffleCommand extends Command {
         content: "Shuffles the queue",
       },
       channel: "guild",
+      userPermissions: (msg: Message) => {
+        if (msg.member.hasPermission("ADMINISTRATOR")) return null;
+        const djRole = this.client.db.get(msg.guild.id, "config.djRole", null);
+
+        if (djRole && !msg.member.roles.cache.has(djRole)) return "DJ";
+      },
     });
   }
 
