@@ -40,6 +40,7 @@ export default class LavaboatQueue extends EventEmitter {
     });
 
     player.on("start", async () => {
+      if ((this.#message.client as AkairoClient).db.get(this.#message.guild.id, "config.announceNext", true))
       this.#message.channel.send(
         new LavaboatEmbed(this.#message)
           .setDescription(
