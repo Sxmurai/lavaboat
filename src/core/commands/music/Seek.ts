@@ -23,6 +23,12 @@ export default class SeekCommand extends Command {
         content: "Seeks to a position",
       },
       channel: "guild",
+      userPermissions: (msg: Message) => {
+        if (msg.member.hasPermission("ADMINISTRATOR")) return null;
+        const djRole = this.client.db.get(msg.guild.id, "config.djRole", null);
+
+        if (djRole && !msg.member.roles.cache.has(djRole)) return "DJ";
+      },
     });
   }
 
