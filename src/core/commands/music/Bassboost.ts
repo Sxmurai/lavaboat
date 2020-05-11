@@ -34,6 +34,12 @@ export default class BassBoostCommand extends Command {
         examples: ["bassboost high", "bassboost none"],
       },
       channel: "guild",
+      userPermissions: (msg: Message) => {
+        if (msg.member.hasPermission("ADMINISTRATOR")) return null;
+        const djRole = this.client.db.get(msg.guild.id, "config.djRole", null);
+
+        if (djRole && !msg.member.roles.cache.has(djRole)) return "DJ";
+      },
     });
   }
 
